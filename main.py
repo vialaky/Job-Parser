@@ -23,12 +23,12 @@ r = requests.get(link, headers=headers)
 soup = BeautifulSoup(r.text, "lxml")
 
 ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
-print(ad_text)
 
 
-# ad = soup('div', class_="text b-typo vacancy-section")
-#
-# print(ad.get_text())
+words = set([w for w in ad_text.split()])
+print(words)
+print(len(words))
+
 
 
 # mystr = re.sub(r"[<>/]", "", ad)
