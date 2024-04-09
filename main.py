@@ -1,3 +1,4 @@
+import re
 import sys
 
 import requests
@@ -21,34 +22,16 @@ r = requests.get(link, headers=headers)
 # print(r.url)
 soup = BeautifulSoup(r.text, "lxml")
 
-ad = str(soup('div', class_="text b-typo vacancy-section"))
-
-print(ad)
-
+ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
+print(ad_text)
 
 
-
-# for link in soup.find_all('a', class_="vt"):
-#     print(link.get('href'))
-# #
+# ad = soup('div', class_="text b-typo vacancy-section")
 #
-# ads = [v for v in soup.find_all('a', class_='vt')]
-# for link in ads:
-#     print(link.get('href'))
-#     #
-# ad_page = requests.get(link.get('href'), headers=header)
-# soup = BeautifulSoup(page.text, "lxml")
-#
-# ad = soup.find('div', class_="text b-typo vacancy-section")
-# # ad = soup.find(class_="l-vacancy")
-# print(ad)
-#
-# sys.exit()
-# text = soup
+# print(ad.get_text())
 
-# print(soup.get_text())
 
-# for vac in vacancies:
-#     print(vac)
+# mystr = re.sub(r"[<>/]", "", ad)
+#
 
 print(f'Total amount of ads: {len(ad_links)}')
