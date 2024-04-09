@@ -10,12 +10,20 @@ headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 r = requests.get(url, headers=headers)
 
 soup = BeautifulSoup(r.text, "lxml")
-ad_links = [link.get('href') for link in soup.find_all('a', class_="vt")]
+ad_links = [link.get('href') for link in soup('a', class_="vt")]
 
-for ad in ad_links:
-    print(ad)
+# for ad in ad_links:
+#     print(ad)
+#
 
+link = ad_links[0]
+r = requests.get(link, headers=headers)
+# print(r.url)
+soup = BeautifulSoup(r.text, "lxml")
 
+ad = str(soup('div', class_="text b-typo vacancy-section"))
+
+print(ad)
 
 
 
