@@ -12,26 +12,18 @@ r = requests.get(url, headers=headers)
 
 soup = BeautifulSoup(r.text, "lxml")
 ad_links = [link.get('href') for link in soup('a', class_="vt")]
+words = []
+for link in ad_links:
+    r = requests.get(link, headers=headers)
+    print(f'Analyzing the ad {r.url}')
+    soup = BeautifulSoup(r.text, "lxml")
 
-# for ad in ad_links:
-#     print(ad)
-#
+    ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
 
-link = ad_links[0]
-r = requests.get(link, headers=headers)
-# print(r.url)
-soup = BeautifulSoup(r.text, "lxml")
+    ad_words = [w for w in ad_text.split()]
+    words.extend(ad_words)
 
-ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
+# print(words)
 
-
-words = set([w for w in ad_text.split()])
-print(words)
-print(len(words))
-
-
-
-# mystr = re.sub(r"[<>/]", "", ad)
-#
-
-print(f'Total amount of ads: {len(ad_links)}')
+print(f'\nTotal amount of ads: {len(ad_links)}')
+print(f'Total amount of keywords: {len(words)}')
