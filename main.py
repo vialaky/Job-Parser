@@ -1,5 +1,6 @@
 import re
 import sys
+from collections import Counter
 
 import requests
 from bs4 import BeautifulSoup
@@ -23,7 +24,11 @@ for link in ad_links:
     ad_words = [w for w in ad_text.split()]
     words.extend(ad_words)
 
-# print(words)
+cnt = Counter(words)
+sorted_cnt = dict(sorted(cnt.items(), key=lambda x: x[1]))
+
+for k, v in sorted_cnt.items():
+    print(k, v)
 
 print(f'\nTotal amount of ads: {len(ad_links)}')
 print(f'Total amount of keywords: {len(words)}')
