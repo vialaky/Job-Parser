@@ -34,18 +34,19 @@ def reading_dou():
 
 words.extend(reading_dou())
 
+# Calculate
 cnt = Counter(words)
-
 sum_words = sum(cnt.values())
 for k, v in cnt.items():
     pct = v * 100.0 / sum_words
     count_pct[k] = round(pct, 1)
 
+# Sort
 sorted_cnt = dict(sorted(count_pct.items(), key=lambda x: x[1]))
 
+# Show
 for k, v in sorted_cnt.items():
     print(k, v)
-
 print(f'\nTotal amount of ads: {sum(amount_of_ads)}')
 print(f'Total amount of keywords: {sum_words}')
 
