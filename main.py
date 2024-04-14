@@ -12,6 +12,14 @@ amount_of_ads = []
 count_pct = {}
 
 
+def get_blacklist():
+    """
+    Reads a list of words that should be excluded from the count.
+    """
+    with open('blacklist.txt', 'r') as file:
+        return [line.strip() for line in file]
+
+
 def reading_dou():
     words_dou = []
 
@@ -26,11 +34,13 @@ def reading_dou():
         print(f'Reading {r.url}')
         soup = BeautifulSoup(r.text, "lxml")
         ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
-        ad_words = [w for w in ad_text.split()]
+        ad_words = [w for w in ad_text.split() if w.lower() not in blacklist]
         words_dou.extend(ad_words)
 
     return words_dou
 
+
+blacklist = get_blacklist()
 
 words.extend(reading_dou())
 
