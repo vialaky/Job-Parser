@@ -16,7 +16,7 @@ def get_blacklist():
     """
     Reads a list of words that should be excluded from the count.
     """
-    with open('blacklist.txt', 'r') as file:
+    with open('blacklist.txt', 'r', encoding="utf-8") as file:
         return [line.strip() for line in file]
 
 
@@ -30,12 +30,17 @@ def reading_dou():
     amount_of_ads.append(len(links_dou))
 
     for link in links_dou:
-        r = requests.get(link, headers=headers)
-        print(f'Reading {r.url}')
-        soup = BeautifulSoup(r.text, "lxml")
-        ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
-        ad_words = [w for w in ad_text.split() if w.lower() not in blacklist]
-        words_dou.extend(ad_words)
+        try:
+            r = requests.get(link, headers=headers)
+            print(f'Reading {r.url}')
+            soup = BeautifulSoup(r.text, "lxml")
+            ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
+            ad_words = [w for w in ad_text.split() if w.lower() not in blacklist]
+            words_dou.extend(ad_words)
+        except requests.exceptions.ConnectionError as err:
+            print(f'Seems like {link} lookup failed..')
+            amount_of_ads.append(-1)
+            continue
 
     return words_dou
 
@@ -64,3 +69,8 @@ print(f'Total amount of keywords: {sum_words}')
 # TODO get the full list of advertises
 # TODO make async
 # TODO add readme
+# TODO connection error
+
+
+# requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'Удаленный хост
+# принудительно разорвал существующее подключение', None, 10054, None))
