@@ -27,16 +27,15 @@ def get_text(ad_link):
         soup = BeautifulSoup(r.text, "lxml")
         ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
         ad_words = [w for w in ad_text.split() if w.lower() not in blacklist]
-        # print(len(ad_words))
         words.extend(ad_words)
-    except requests.exceptions.ConnectionError as err:
+    except requests.exceptions.ConnectionError:
         print(f'Seems like {ad_link} lookup failed..')
         amount_of_ads.append(-1)
         # continue
 
 
 def read_dou():
-    words_dou = []
+    # words_dou = []
 
     r = requests.get(url_dou, headers=headers)
     soup = BeautifulSoup(r.text, "lxml")
@@ -47,12 +46,9 @@ def read_dou():
     for link in links_dou:
         get_text(link)
 
-    # return words_dou
-
 
 blacklist = get_blacklist()
 
-# words.extend(reading_dou())
 read_dou()
 
 # Calculate
