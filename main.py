@@ -1,3 +1,4 @@
+import asyncio
 from collections import Counter
 
 import requests
@@ -20,22 +21,22 @@ def get_blacklist():
         return [line.strip() for line in file]
 
 
-def get_text(ad_link):
-    try:
+async def get_text(ad_link):
+    # try:
         r = requests.get(ad_link, headers=headers)
         print(f'Reading {r.url}')
+        # print(r.url)
         soup = BeautifulSoup(r.text, "lxml")
         ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
         ad_words = [w for w in ad_text.split() if w.lower() not in blacklist]
         words.extend(ad_words)
-    except requests.exceptions.ConnectionError:
-        print(f'Seems like {ad_link} lookup failed..')
-        amount_of_ads.append(-1)
-        # continue
+    # except requests.exceptions.ConnectionError:
+    #     print(f'Seems like {ad_link} lookup failed..')
+    #     amount_of_ads.append(-1)
+    #     # continue
 
 
-def read_dou():
-    # words_dou = []
+async def read_dou():
 
     r = requests.get(url_dou, headers=headers)
     soup = BeautifulSoup(r.text, "lxml")
@@ -43,13 +44,23 @@ def read_dou():
     links_dou = [link.get('href') for link in soup('a', class_="vt")]
     amount_of_ads.append(len(links_dou))
 
-    for link in links_dou:
-        get_text(link)
+    try:
+        async with asyncio.TaskGroup() as tg:
+            tasks = [tg.create_task(get_text(link)) for link in links_dou]
+            # print(f'Reading {r.url}')
+    except Exception as err:
+        print(err.args)
+    # async with asyncio.TaskGroup() as tg:
+    #
+    #     for link in links_dou:
+    #         task = tg.create_task(get_text(link))
 
+    # tasks = [asyncio.create_task(get_text(link)) for link in links_dou]
+    # await asyncio.gather(*tasks)
 
 blacklist = get_blacklist()
 
-read_dou()
+asyncio.run(read_dou())
 
 # Calculate
 cnt = Counter(words)
