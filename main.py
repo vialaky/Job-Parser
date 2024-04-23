@@ -2,6 +2,7 @@ import asyncio
 from collections import Counter
 
 import requests
+import time
 from bs4 import BeautifulSoup
 
 # Initialization
@@ -21,9 +22,9 @@ def get_blacklist():
         return [line.strip() for line in file]
 
 
-async def get_text(ad_link):
+async def get_text(dou_session, ad_link):
     # try:
-        r = requests.get(ad_link, headers=headers)
+        r = dou_session.get(ad_link, headers=headers)
         print(f'Reading {r.url}')
         # print(r.url)
         soup = BeautifulSoup(r.text, "lxml")
@@ -37,19 +38,22 @@ async def get_text(ad_link):
 
 
 async def read_dou():
+    with requests.session() as session:
 
-    r = requests.get(url_dou, headers=headers)
-    soup = BeautifulSoup(r.text, "lxml")
+        r = session.get(url_dou, headers=headers)
+        soup = BeautifulSoup(r.text, "lxml")
 
-    links_dou = [link.get('href') for link in soup('a', class_="vt")]
-    amount_of_ads.append(len(links_dou))
+        links_dou = [link.get('href') for link in soup('a', class_="vt")]
+        amount_of_ads.append(len(links_dou))
 
-    try:
-        async with asyncio.TaskGroup() as tg:
-            tasks = [tg.create_task(get_text(link)) for link in links_dou]
-            # print(f'Reading {r.url}')
-    except Exception as err:
-        print(err.args)
+
+
+        try:
+            async with asyncio.TaskGroup() as tg:
+                tasks = [tg.create_task(get_text(session, link)) for link in links_dou]
+                # print(f'Reading {r.url}')
+        except Exception as err:
+            print(err.args)
     # async with asyncio.TaskGroup() as tg:
     #
     #     for link in links_dou:
@@ -57,6 +61,10 @@ async def read_dou():
 
     # tasks = [asyncio.create_task(get_text(link)) for link in links_dou]
     # await asyncio.gather(*tasks)
+
+start_timestamp = time.time()
+
+
 
 blacklist = get_blacklist()
 
@@ -77,6 +85,12 @@ for k, v in sorted_cnt.items():
     print(k, v)
 print(f'\nTotal amount of ads: {sum(amount_of_ads)}')
 print(f'Total amount of keywords: {sum_words}')
+
+N = sum(amount_of_ads)
+
+task_time = round(time.time() - start_timestamp, 2)
+rps = round(N / task_time, 1)
+print(f"| Requests: {N}; Total time: {task_time} s; RPS: {rps}. |\n")
 
 # TODO: add jinny
 # TODO get the full list of advertises
