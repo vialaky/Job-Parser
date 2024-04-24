@@ -25,16 +25,18 @@ def get_blacklist():
 
 async def get_text(dou_session, ad_link):
     # try:
-        r = await dou_session.get(ad_link, headers=headers)
-        print(f'Reading {r.url}')
-        soup = BeautifulSoup(await r.text(), "lxml")
-        ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
-        ad_words = [w for w in ad_text.split() if w.lower() not in blacklist]
-        words.extend(ad_words)
-    # except requests.exceptions.ConnectionError:
-    #     print(f'Seems like {ad_link} lookup failed..')
-    #     amount_of_ads.append(-1)
-    #     # continue
+    r = await dou_session.get(ad_link, headers=headers)
+    print(f'Reading {r.url}')
+    soup = BeautifulSoup(await r.text(), "lxml")
+    ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
+    ad_words = [w for w in ad_text.split() if w.lower() not in blacklist]
+    words.extend(ad_words)
+
+
+# except requests.exceptions.ConnectionError:
+#     print(f'Seems like {ad_link} lookup failed..')
+#     amount_of_ads.append(-1)
+#     # continue
 
 
 async def read_dou():
@@ -46,31 +48,22 @@ async def read_dou():
     links_dou = [link.get('href') for link in soup('a', class_="vt")]
     amount_of_ads.append(len(links_dou))
 
-
     async with aiohttp.ClientSession() as session:
 
         try:
-
             async with asyncio.TaskGroup() as tg:
-
                 tasks = [tg.create_task(get_text(session, link)) for link in links_dou]
-            # tasks = [asyncio.create_task(get_text(session, link)) for link in links_dou]
-
-            # await asyncio.gather(*tasks)
-
+                # tasks = [asyncio.create_task(get_text(session, link)) for link in links_dou]
+                # await asyncio.gather(*tasks)
         except Exception as err:
             print(err.args)
 
+
 start_timestamp = time.time()
-
-
 
 blacklist = get_blacklist()
 
 asyncio.run(read_dou())
-
-
-
 
 # Calculate
 cnt = Counter(words)
