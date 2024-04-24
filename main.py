@@ -1,6 +1,7 @@
 import asyncio
 from collections import Counter
 
+import aiohttp
 import requests
 import time
 from bs4 import BeautifulSoup
@@ -24,10 +25,10 @@ def get_blacklist():
 
 async def get_text(dou_session, ad_link):
     # try:
-        r = dou_session.get(ad_link, headers=headers)
-        print(f'Reading {r.url}')
+        r = await dou_session.get(ad_link, headers=headers)
+        # print(f'Reading {r.url}')
         # print(r.url)
-        soup = BeautifulSoup(r.text, "lxml")
+        soup = BeautifulSoup(await r.text(), "lxml")
         ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
         ad_words = [w for w in ad_text.split() if w.lower() not in blacklist]
         words.extend(ad_words)
@@ -38,22 +39,25 @@ async def get_text(dou_session, ad_link):
 
 
 async def read_dou():
-    with requests.session() as session:
+    # with requests.session() as session:
 
-        r = session.get(url_dou, headers=headers)
-        soup = BeautifulSoup(r.text, "lxml")
+    r = requests.get(url_dou, headers=headers)
+    soup = BeautifulSoup(r.text, "lxml")
 
-        links_dou = [link.get('href') for link in soup('a', class_="vt")]
-        amount_of_ads.append(len(links_dou))
+    links_dou = [link.get('href') for link in soup('a', class_="vt")]
+    amount_of_ads.append(len(links_dou))
 
+    # with requests.session() as session:
+    # async with aiohttp.ClientSession() as session:
+    #
+    #     try:
+    #         async with asyncio.TaskGroup() as tg:
+    #             tasks = [tg.create_task(get_text(session, link)) for link in links_dou]
+    #             # print(f'Reading {r.url}')
+    #     except Exception as err:
+    #         print(err.args)
+    #
 
-
-        try:
-            async with asyncio.TaskGroup() as tg:
-                tasks = [tg.create_task(get_text(session, link)) for link in links_dou]
-                # print(f'Reading {r.url}')
-        except Exception as err:
-            print(err.args)
     # async with asyncio.TaskGroup() as tg:
     #
     #     for link in links_dou:
@@ -62,6 +66,22 @@ async def read_dou():
     # tasks = [asyncio.create_task(get_text(link)) for link in links_dou]
     # await asyncio.gather(*tasks)
 
+    async with aiohttp.ClientSession() as session:
+        # tasks = []
+        # for _ in tqdm(range(times), desc='Async gather fetching data...', colour='GREEN'):
+        #     tasks.append(asyncio.create_task(session.get(self.url + path)))
+
+        tasks = [asyncio.create_task(get_text(session, link)) for link in links_dou]
+        # tasks = [asyncio.create_task(session.get(links_dou[0]))]
+
+        responses = await asyncio.gather(*tasks)
+        # soup = BeautifulSoup(r.text, "lxml")
+
+        # out = [BeautifulSoup(await r.text(), "lxml").find('div', class_="text b-typo vacancy-section").getText() for r in responses]
+        # ad_words = [w for w in out.split() if w.lower() not in blacklist]
+        # print(words)
+
+
 start_timestamp = time.time()
 
 
@@ -69,6 +89,9 @@ start_timestamp = time.time()
 blacklist = get_blacklist()
 
 asyncio.run(read_dou())
+
+
+
 
 # Calculate
 cnt = Counter(words)
