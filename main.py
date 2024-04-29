@@ -1,4 +1,5 @@
 import asyncio
+import sys
 # import sys
 from collections import Counter
 
@@ -21,7 +22,14 @@ def get_blacklist():
     Reads a list of words that should be excluded from the count.
     """
     with open('blacklist.txt', 'r', encoding="utf-8") as file:
-        return [line.strip() for line in file]
+        ls = list(set([x.lower() for l in [line.strip().split() for line in file] for x in l]))
+        ls.sort()
+    return ls
+
+
+def update_blacklist(ls):
+    with open('blacklist.txt', 'w', encoding="utf-8") as file:
+        file.writelines(f'{line.lower()}\n' for line in ls)
 
 
 async def get_text(dou_session, ad_link):
@@ -42,8 +50,6 @@ async def get_text(dou_session, ad_link):
 
 
 async def read_dou():
-    # with requests.session() as session:
-
     r = requests.get(url_dou, headers=headers)
     soup = BeautifulSoup(r.text, "lxml")
 
@@ -55,8 +61,6 @@ async def read_dou():
         try:
             async with asyncio.TaskGroup() as tg:
                 tasks = [tg.create_task(get_text(session, link)) for link in links_dou]
-                # tasks = [asyncio.create_task(get_text(session, link)) for link in links_dou]
-                # await asyncio.gather(*tasks)
         except Exception as err:
             print(err.args)
 
@@ -64,6 +68,7 @@ async def read_dou():
 start_timestamp = time.time()
 
 blacklist = get_blacklist()
+update_blacklist(blacklist)
 
 asyncio.run(read_dou())
 
