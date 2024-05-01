@@ -1,6 +1,4 @@
 import asyncio
-import sys
-# import sys
 from collections import Counter
 
 import aiohttp
@@ -22,7 +20,7 @@ def get_blacklist():
     Reads a list of words that should be excluded from the count.
     """
     with open('blacklist.txt', 'r', encoding="utf-8") as file:
-        ls = list(set([x.lower() for l in [line.strip().split() for line in file] for x in l]))
+        ls = list(set([x.lower() for y in [line.strip().split() for line in file] for x in y]))
         ls.sort()
     return ls
 
@@ -38,7 +36,7 @@ async def get_text(dou_session, ad_link):
     print(f'Reading {r.url}')
     soup = BeautifulSoup(await r.text(), "lxml")
     ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
-    ad_text = ad_text.replace(',', '').replace('.', '')
+    ad_text = ad_text.replace(',', '').replace('.', '').replace('(', '')
     ad_words = list(set([w for w in ad_text.split() if w.lower() not in blacklist]))
     words.extend(ad_words)
 
@@ -60,7 +58,7 @@ async def read_dou():
 
         try:
             async with asyncio.TaskGroup() as tg:
-                tasks = [tg.create_task(get_text(session, link)) for link in links_dou]
+                [tg.create_task(get_text(session, link)) for link in links_dou]
         except Exception as err:
             print(err.args)
 
@@ -77,7 +75,7 @@ cnt = Counter(words)
 sum_words = sum(cnt.values())
 for k, v in cnt.items():
     pct = v * 100.0 / sum_words
-    count_pct[k] = round(pct, 1)
+    count_pct[k] = round(pct, 2)
 
 # Sort
 sorted_cnt = dict(sorted(count_pct.items(), key=lambda x: x[1]))
