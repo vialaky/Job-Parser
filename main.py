@@ -75,7 +75,7 @@ cnt = Counter(words)
 sum_words = sum(cnt.values())
 for k, v in cnt.items():
     pct = v * 100.0 / sum_words
-    count_pct[k] = round(pct, 2)
+    count_pct[k] = round(pct, 1)
 
 # Sort
 sorted_cnt = dict(sorted(count_pct.items(), key=lambda x: x[1]))
