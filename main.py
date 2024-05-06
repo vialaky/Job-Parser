@@ -36,7 +36,7 @@ async def get_text(dou_session, ad_link):
     print(f'Reading {r.url}')
     soup = BeautifulSoup(await r.text(), "lxml")
     ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
-    ad_text = ad_text.replace(',', '').replace('.', '').replace('(', '')
+    ad_text = ad_text.replace(',', '').replace('.', '').replace('(', '').replace(':', ' ')
     ad_words = list(set([w for w in ad_text.split() if w.lower() not in blacklist]))
     words.extend(ad_words)
 
