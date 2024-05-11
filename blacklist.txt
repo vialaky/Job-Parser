@@ -1,5 +1,7 @@
 &
 +
+/
+0.0
 0.1
 0.2
 0.3
@@ -12,9 +14,11 @@
 1
 1.0
 1.8
+10
 100%
 11
 15
+17
 2
 2+
 2.0
@@ -35,6 +39,7 @@ ability
 able
 about
 access
+accordance
 according
 accounting
 across
@@ -68,6 +73,7 @@ app
 application
 applications
 approach
+approaches
 appropriate
 architecture
 architectures
@@ -75,7 +81,9 @@ are
 around
 as
 assistance
+asynchronous
 at
+atmosphere
 attention
 attitude
 authentication
@@ -86,12 +94,14 @@ available
 b2b
 backend
 background
+balance
 base
 based
 basic
 be
 become
 been
+before
 being
 believe
 beneficial
@@ -119,6 +129,9 @@ capabilities
 capable
 care
 career
+cases
+center
+ceremonies
 certifications
 challenges
 challenging
@@ -126,6 +139,8 @@ chance
 changes
 chat
 choose
+ci/cd
+classes
 clean
 clear
 client
@@ -137,6 +152,7 @@ coding
 collaborate
 collaboration
 collaborative
+collaboratively
 colleagues
 comfortable
 commercial
@@ -170,11 +186,13 @@ containerization
 content
 continue
 continuous
+continuously
 contract
 contribute
 contributing
 control
 convenient
+cool
 cooperation
 core
 corporate
@@ -214,6 +232,7 @@ degree
 deliver
 delivering
 deploy
+deploying
 deployment
 deserve
 design
@@ -268,6 +287,8 @@ enthusiastic
 entire
 environment
 environments
+equivalent
+established
 estate
 etc
 eur
@@ -284,6 +305,7 @@ exchanging
 excited
 exciting
 existing
+expand
 experience
 experienced
 experiences
@@ -301,6 +323,8 @@ features
 feedback
 feel
 few
+field
+fit
 flexibility
 flexible
 flow
@@ -313,6 +337,7 @@ fostering
 framework
 frameworks
 freedom
+friendliness
 friendly
 from
 frontend
@@ -321,7 +346,9 @@ full-stack
 full-time
 fullstack
 fully
+function
 functional
+functionality
 further
 future
 g
@@ -330,6 +357,7 @@ gaming
 gather
 generate
 generation
+get
 gifts
 global
 globally
@@ -353,6 +381,7 @@ high
 high-quality
 higher
 highly
+holidays
 home
 honesty
 hours
@@ -381,9 +410,11 @@ independently
 individuals
 industry
 infrastructure
+ingestion
 innovation
 innovative
 innovators
+insights
 instrumental
 insurance
 integral
@@ -401,6 +432,7 @@ international
 interview
 into
 introduce
+involved
 involvement
 is
 issues
@@ -428,6 +460,7 @@ learning
 least
 leave
 leaves
+let’s
 level
 leveraging
 libraries
@@ -443,15 +476,21 @@ maintain
 maintainability
 maintainable
 maintaining
+maintenance
 make
 making
 manage
 management
+managing
+mandatory
 many
+market
 master’s
+matches
 matter
 medical
 meet
+meetings
 members
 mental
 mentor
@@ -496,15 +535,19 @@ on
 onboarding
 one
 online
+only
 open
+openness
 operations
 opportunities
 opportunity
 optimal
 optimize
+optimizing
 options
 or
 organization
+organizational
 oriented
 other
 our
@@ -531,6 +574,7 @@ perform
 performance
 person
 personal
+personalized
 perspectives
 phases
 photo
@@ -577,19 +621,24 @@ programs
 project
 projects
 promote
+promptly
 protocols
 prototyping
+proven
 provide
 providers
 providing
+public
 pull
 push
 pushing
 python
+python-based
 qa
 quality
 query
 quick
+range
 rate
 ready
 real
@@ -599,9 +648,6 @@ record
 refactor
 regression
 related
-friendliness 0.1
-cool 0.1
-public
 relational
 reliability
 reliable
@@ -613,6 +659,7 @@ requirement
 requirements
 requires
 requiring
+research
 resolving
 responsibilities
 review
@@ -620,6 +667,7 @@ reviews
 roadmap
 robust
 role
+run
 running
 saas
 salary
@@ -636,6 +684,7 @@ see
 seeking
 send
 senior
+serve
 service
 services
 sessions
@@ -655,6 +704,8 @@ skilled
 skills
 small
 software
+solid
+solution
 solutions
 solve
 solver
@@ -694,6 +745,7 @@ team
 teams
 tech
 technical
+techniques
 technological
 technologies
 technology
@@ -701,6 +753,7 @@ telecommunications
 test
 testing
 tests
+than
 that
 the
 their
@@ -739,6 +792,7 @@ unique
 unit
 unlimited
 up
+updates
 upper-intermediate
 us
 use
@@ -780,6 +834,7 @@ with
 within
 without
 work
+work-life
 working
 works
 workshops
@@ -806,6 +861,7 @@ you’re
 вже
 взаємодії
 ви
+вибір
 використання
 використанням
 вимог
@@ -849,6 +905,7 @@ you’re
 нашої
 не
 обробку
+оптимізація
 основі
 офіс
 офісі
@@ -880,6 +937,7 @@ you’re
 скриптів
 співробітників
 спілкування
+стежимо
 та
 технологій
 технології
