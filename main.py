@@ -55,12 +55,12 @@ async def get_text(dou_session, ad_link):
 async def read_dou():
     driver = webdriver.Chrome()
     driver.get(url_dou)
-    time.sleep(1)
+    time.sleep(3)
 
     for _ in range(3):
         more_button = driver.find_element(By.LINK_TEXT, "Більше вакансій")
         more_button.click()
-        time.sleep(1)
+        time.sleep(2)
 
     # r = requests.get(url_dou, headers=headers)
     soup = BeautifulSoup(driver.page_source, "lxml")
