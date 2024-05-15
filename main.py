@@ -39,7 +39,7 @@ async def get_text(dou_session, ad_link):
     ad_text = ad_text.replace(',', ' ').replace('.', ' ').replace(
         '(', ' ').replace(':', ' ').replace(')', ' ').replace(
         ';', ' ')
-    ad_words = list(set([w for w in ad_text.split() if w.lower() not in blacklist]))
+    ad_words = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
     words.extend(ad_words)
 
 
