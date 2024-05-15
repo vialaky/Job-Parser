@@ -6,6 +6,9 @@ import requests
 import time
 from bs4 import BeautifulSoup
 
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
 # Initialization
 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/123.0.0.0 Safari/537.36'}
@@ -50,11 +53,21 @@ async def get_text(dou_session, ad_link):
 
 
 async def read_dou():
-    r = requests.get(url_dou, headers=headers)
-    soup = BeautifulSoup(r.text, "lxml")
+    driver = webdriver.Chrome()
+    driver.get(url_dou)
+    time.sleep(5)
+
+    more_button = driver.find_element(By.LINK_TEXT, "Більше вакансій")
+    more_button.click()
+    time.sleep(10)
+
+    # r = requests.get(url_dou, headers=headers)
+    soup = BeautifulSoup(driver.page_source, "lxml")
 
     links_dou = [link.get('href') for link in soup('a', class_="vt")]
     amount_of_ads.append(len(links_dou))
+
+    driver.quit()
 
     async with aiohttp.ClientSession() as session:
 
