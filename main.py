@@ -2,7 +2,7 @@ import asyncio
 from collections import Counter
 
 import aiohttp
-import requests
+# import requests
 import time
 from bs4 import BeautifulSoup
 
@@ -55,11 +55,12 @@ async def get_text(dou_session, ad_link):
 async def read_dou():
     driver = webdriver.Chrome()
     driver.get(url_dou)
-    time.sleep(5)
+    time.sleep(1)
 
-    more_button = driver.find_element(By.LINK_TEXT, "Більше вакансій")
-    more_button.click()
-    time.sleep(10)
+    for _ in range(3):
+        more_button = driver.find_element(By.LINK_TEXT, "Більше вакансій")
+        more_button.click()
+        time.sleep(1)
 
     # r = requests.get(url_dou, headers=headers)
     soup = BeautifulSoup(driver.page_source, "lxml")
