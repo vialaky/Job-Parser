@@ -89,9 +89,11 @@ asyncio.run(read_dou())
 # Calculate
 N = sum(total_ads)
 cnt = Counter(words)
-total_words = sum(cnt.values())
+# total_words = sum(cnt.values())
+total_words = len(set(words))
 for k, v in cnt.items():
     pct = v * 100.0 / N
+
     count_pct[k] = round(pct)
 
 # Sort
@@ -106,7 +108,6 @@ print(f'Total amount of keywords: {total_words}')
 task_time = round(time.time() - start_timestamp, 2)
 rps = round(N / task_time, 1)
 print(f"| Requests: {N}; Total time: {task_time} s; RPS: {rps}. |\n")
-
 
 # TODO: add jinny
 # TODO get the full list of advertises
