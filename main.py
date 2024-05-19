@@ -2,6 +2,7 @@ import asyncio
 from collections import Counter
 
 import aiohttp
+import re
 import time
 from bs4 import BeautifulSoup
 
@@ -13,7 +14,7 @@ headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
                          'Chrome/123.0.0.0 Safari/537.36'}
 url_dou = 'https://jobs.dou.ua/vacancies/?category=Python'
 words = []
-amount_of_ads = []
+total_ads = []
 count_pct = {}
 
 
@@ -29,26 +30,26 @@ def get_blacklist():
 
 def update_blacklist(ls):
     with open('blacklist.txt', 'w', encoding="utf-8") as file:
-        file.writelines(f'{line.lower()}\n' for line in ls)
+        file.writelines(f'{line.lower()}\n' for line in ls if line.isalpha())
 
 
 async def get_text(dou_session, ad_link):
-    # try:
     r = await dou_session.get(ad_link, headers=headers)
     print(f'Reading {r.url}')
     soup = BeautifulSoup(await r.text(), "lxml")
-    ad_text = soup.find('div', class_="text b-typo vacancy-section").getText()
-    ad_text = ad_text.replace(',', ' ').replace('.', ' ').replace(
-        '(', ' ').replace(':', ' ').replace(')', ' ').replace(
-        ';', ' ').replace('●', ' ').replace('*', ' ')
+    ad_text_with_punctuation = soup.find('div', class_="text b-typo vacancy-section").getText()
+
+    ad_text = re.sub(r"[.,:;()/%]", " ", ad_text_with_punctuation)
+
+    # ad_text = ad_text.replace(',', ' ').replace('.', ' ').replace(
+    #     '(', ' ').replace(':', ' ').replace(')', ' ').replace(
+    #     ';', ' ').replace('●', ' ').replace('*', ' ')
+
     ad_words = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
+    ad_words = [w for w in ad_words if w.isascii() and w.isalpha() and len(w) > 1]
+
     words.extend(ad_words)
-
-
-# except requests.exceptions.ConnectionError:
-#     print(f'Seems like {ad_link} lookup failed..')
-#     amount_of_ads.append(-1)
-#     # continue
+    total_ads.append(1)
 
 
 async def read_dou():
@@ -65,7 +66,6 @@ async def read_dou():
     soup = BeautifulSoup(driver.page_source, "lxml")
 
     links_dou = [link.get('href') for link in soup('a', class_="vt")]
-    amount_of_ads.append(len(links_dou))
 
     driver.quit()
 
@@ -81,16 +81,18 @@ async def read_dou():
 start_timestamp = time.time()
 
 blacklist = get_blacklist()
+
 update_blacklist(blacklist)
 
 asyncio.run(read_dou())
 
 # Calculate
+N = sum(total_ads)
 cnt = Counter(words)
-sum_words = sum(cnt.values())
+total_words = sum(cnt.values())
 for k, v in cnt.items():
-    pct = v * 100.0 / sum_words
-    count_pct[k] = round(pct, 1)
+    pct = v * 100.0 / N
+    count_pct[k] = round(pct)
 
 # Sort
 sorted_cnt = dict(sorted(count_pct.items(), key=lambda x: x[1]))
@@ -98,14 +100,13 @@ sorted_cnt = dict(sorted(count_pct.items(), key=lambda x: x[1]))
 # Show
 for k, v in sorted_cnt.items():
     print(k, v)
-print(f'\nTotal amount of ads: {sum(amount_of_ads)}')
-print(f'Total amount of keywords: {sum_words}')
-
-N = sum(amount_of_ads)
+print(f'\nTotal amount of ads: {sum(total_ads)}')
+print(f'Total amount of keywords: {total_words}')
 
 task_time = round(time.time() - start_timestamp, 2)
 rps = round(N / task_time, 1)
 print(f"| Requests: {N}; Total time: {task_time} s; RPS: {rps}. |\n")
+
 
 # TODO: add jinny
 # TODO get the full list of advertises
