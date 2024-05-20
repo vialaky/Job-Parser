@@ -5,7 +5,6 @@ import aiohttp
 import re
 import time
 from bs4 import BeautifulSoup
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -64,8 +63,9 @@ async def read_dou():
 
     # r = requests.get(url_dou, headers=headers)
     soup = BeautifulSoup(driver.page_source, "lxml")
+    target = soup('a', class_="vt")
 
-    links_dou = [link.get('href') for link in soup('a', class_="vt")]
+    links_dou = [link.get('href') for link in target if ("Senior" or "Lead") not in link.getText()]
 
     driver.quit()
 
