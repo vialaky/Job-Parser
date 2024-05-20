@@ -36,8 +36,7 @@ async def get_text(dou_session, ad_link):
     r = await dou_session.get(ad_link, headers=headers)
     print(f'Reading {r.url}')
     soup = BeautifulSoup(await r.text(), "lxml")
-    ad_text_with_punctuation = soup.find('div', class_="text b-typo vacancy-section").getText()
-
+    ad_text_with_punctuation = soup.find('div', class_="text b-typo vacancy-section").prettify()
     ad_text = re.sub(r"[.,:;()/%]", " ", ad_text_with_punctuation)
 
     # ad_text = ad_text.replace(',', ' ').replace('.', ' ').replace(
@@ -110,7 +109,6 @@ rps = round(N / task_time, 1)
 print(f"| Requests: {N}; Total time: {task_time} s; RPS: {rps}. |\n")
 
 # TODO: add jinny
-# TODO get the full list of advertises
 # TODO add readme
 # TODO connection error
 
