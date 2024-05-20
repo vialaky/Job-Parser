@@ -64,7 +64,11 @@ async def read_dou():
     soup = BeautifulSoup(driver.page_source, "lxml")
     target = soup('a', class_="vt")
 
-    links_dou = [link.get('href') for link in target if ("Senior" or "Lead") not in link.getText()]
+    links_dou = [link.get('href') for link in target if
+                 "Senior" not in link.getText() and
+                 "Lead" not in link.getText() and
+                 "Mentor" not in link.getText() and
+                 "QA" not in link.getText()]
 
     driver.quit()
 
