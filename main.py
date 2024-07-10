@@ -1,4 +1,5 @@
 import asyncio
+import sys
 from collections import Counter
 
 import aiohttp
@@ -36,7 +37,9 @@ async def get_text(dou_session, ad_link):
     r = await dou_session.get(ad_link, headers=headers)
     print(f'Reading {r.url}')
     soup = BeautifulSoup(await r.text(), "lxml")
-    ad_text_with_punctuation = soup.find('div', class_="text b-typo vacancy-section").prettify()
+
+    ad_text_with_punctuation = soup.find('div', class_="b-typo vacancy-section").prettify()
+
     ad_text = re.sub(r"[.,:;()/%]", " ", ad_text_with_punctuation)
 
     # ad_text = ad_text.replace(',', ' ').replace('.', ' ').replace(
