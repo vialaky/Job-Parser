@@ -33,6 +33,7 @@ attention
 automated
 automation
 aws
+backed
 backend
 background
 based
@@ -61,12 +62,14 @@ challenge
 challenges
 challenging
 chillout
+choose
 ci
 classes
 client
 clients
 closely
 cloud
+cluster
 code
 coding
 collaborate
@@ -91,6 +94,8 @@ composer
 comprehensive
 computer
 concepts
+configurable
+containerization
 continuous
 contribute
 contributed
@@ -114,12 +119,15 @@ database
 databases
 day
 days
+deal
+dealer
 debugging
 decisions
 deep
 degree
 deliver
 delivering
+deploying
 deployment
 description
 design
@@ -149,6 +157,7 @@ efficiency
 efficient
 elements
 employees
+encapsulates
 engineer
 engineering
 engineers
@@ -170,6 +179,7 @@ experienced
 experiences
 expertise
 experts
+exposing
 external
 familiarity
 feature
@@ -185,12 +195,14 @@ for
 framework
 frameworks
 free
+fresh
 friendly
 from
 frontend
 full
 functional
 functionality
+funding
 further
 future
 gathering
@@ -214,6 +226,7 @@ helps
 high
 higher
 highly
+his
 holidays
 home
 hotels
@@ -236,6 +249,7 @@ includes
 including
 independently
 industry
+influence
 infrastructure
 innovation
 innovative
@@ -249,6 +263,7 @@ internal
 international
 interview
 into
+inventive
 involved
 is
 issues
@@ -284,6 +299,7 @@ love
 machine
 main
 maintain
+maintaining
 make
 management
 market
@@ -304,10 +320,13 @@ monitoring
 months
 more
 most
+multiprocessing
+nail
 necessary
 need
 needed
 needs
+networking
 new
 nice
 not
@@ -347,6 +366,7 @@ people
 per
 performance
 personal
+pioneering
 pipelines
 place
 planning
@@ -360,7 +380,9 @@ policy
 position
 potential
 practices
+premium
 principles
+probability
 problems
 process
 processes
@@ -379,11 +401,13 @@ proven
 provide
 provides
 providing
+psychologist
 python
 qa
 qualifications
 quality
 quickly
+random
 readiness
 real
 reduced
@@ -399,6 +423,7 @@ responsibilities
 responsible
 responsiveness
 restaurants
+return
 review
 reviews
 right
@@ -414,6 +439,7 @@ scraping
 screening
 security
 seeking
+server
 service
 services
 sessions
@@ -423,6 +449,7 @@ sharing
 sick
 skilled
 skills
+slots
 so
 software
 solution
@@ -439,10 +466,12 @@ standards
 stimulating
 strong
 students
+studies
 studying
 successful
 such
 support
+supporting
 system
 systems
 take
@@ -450,6 +479,7 @@ talented
 task
 tasks
 team
+teammate
 teams
 teamwork
 tech
@@ -468,10 +498,13 @@ them
 they
 thinking
 this
+thrilled
 through
 time
+timezone
 to
 together
+tool
 tools
 training
 trainings
@@ -482,8 +515,10 @@ ukrainian
 under
 understand
 understanding
+underwriting
 unique
 unit
+until
 up
 upgrade
 us
@@ -492,6 +527,7 @@ used
 user
 users
 using
+utilizes
 vacation
 vacations
 value
@@ -499,6 +535,7 @@ values
 various
 very
 video
+virtualization
 vision
 visual
 want

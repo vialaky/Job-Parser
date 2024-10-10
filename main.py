@@ -1,5 +1,4 @@
 import asyncio
-import sys
 from collections import Counter
 
 import aiohttp
@@ -45,10 +44,6 @@ async def get_text_dou(dou_session, ad_link):
 
     ad_text = re.sub(r"[.,:;()/%]", " ", ad_text_with_punctuation)
 
-    # ad_text = ad_text.replace(',', ' ').replace('.', ' ').replace(
-    #     '(', ' ').replace(':', ' ').replace(')', ' ').replace(
-    #     ';', ' ').replace('●', ' ').replace('*', ' ')
-
     ad_words_dou = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
     ad_words_dou = [w for w in ad_words_dou if w.isascii() and w.isalpha() and len(w) > 1]
 
@@ -60,16 +55,10 @@ async def get_text_djinni(djinni_session, ad_link):
     r = await djinni_session.get(ad_link, headers=headers)
     print(f'Reading {r.url}')
     soup = BeautifulSoup(await r.text(), "lxml")
-    # print(soup)
 
-    # ad_text_with_punctuation = soup.find('div', class_="b-typo vacancy-section").prettify()
     ad_text_with_punctuation = soup.find('div', class_="mb-4 job-post__description").prettify()
 
     ad_text = re.sub(r"[.,:;()/%]", " ", ad_text_with_punctuation)
-
-    # ad_text = ad_text.replace(',', ' ').replace('.', ' ').replace(
-    #     '(', ' ').replace(':', ' ').replace(')', ' ').replace(
-    #     ';', ' ').replace('●', ' ').replace('*', ' ')
 
     ad_words_djinni = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
     ad_words_djinni = [w for w in ad_words_djinni if w.isascii() and w.isalpha() and len(w) > 1]
@@ -89,7 +78,6 @@ async def read_dou():
         more_button.click()
         time.sleep(2)
 
-    # r = requests.get(url_dou, headers=headers)
     soup = BeautifulSoup(driver.page_source, "lxml")
     target = soup('a', class_="vt")
 
@@ -112,21 +100,9 @@ async def read_dou():
 
 async def read_djinni():
     print('Start reading DJINNI')
-    # driver = webdriver.Chrome()
-    # driver.get(url_dou)
-    # time.sleep(3)
-    #
-    # for _ in range(3):
-    #     more_button = driver.find_element(By.LINK_TEXT, "Більше вакансій")
-    #     more_button.click()
-    #     time.sleep(2)
-    #
+
     page = requests.get(url_djinni, headers=headers)
     soup = BeautifulSoup(page.text, "lxml")
-
-    # print(page.status_code)
-    # print(soup)
-    # sys.exit()
 
     target = soup('a', class_="job-item__title-link")
 
@@ -180,7 +156,6 @@ task_time = round(time.time() - start_timestamp, 2)
 rps = round(N / task_time, 1)
 print(f"| Requests: {N}; Total time: {task_time} s; RPS: {rps}. |\n")
 
-# TODO: add jinny
 # TODO add readme
 # TODO connection error
 
