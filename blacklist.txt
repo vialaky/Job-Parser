@@ -7,6 +7,7 @@ according
 across
 advanced
 advertising
+again
 ai
 algorithms
 all
@@ -16,6 +17,7 @@ ambitious
 an
 analysis
 and
+anniversary
 any
 api
 apis
@@ -140,6 +142,7 @@ developing
 development
 devops
 different
+disposing
 distributed
 diverse
 do
@@ -200,6 +203,7 @@ friendly
 from
 frontend
 full
+function
 functional
 functionality
 funding
@@ -261,6 +265,7 @@ interesting
 intermediate
 internal
 international
+internship
 interview
 into
 inventive
@@ -287,11 +292,14 @@ least
 leave
 leaves
 legal
+lender
 level
 leverage
 libraries
 life
+lifestyle
 like
+limits
 linux
 location
 looking
@@ -307,6 +315,7 @@ medical
 meet
 members
 mental
+mentored
 mentorship
 methodologies
 microservices
@@ -320,6 +329,7 @@ monitoring
 months
 more
 most
+motivations
 multiprocessing
 nail
 necessary
@@ -349,6 +359,7 @@ optimization
 optimize
 optimizing
 or
+order
 other
 our
 over
@@ -366,6 +377,7 @@ people
 per
 performance
 personal
+personally
 pioneering
 pipelines
 place
@@ -418,6 +430,7 @@ remote
 required
 requirements
 resolve
+respectable
 responsibilities
 responsible
 responsiveness
@@ -455,6 +468,7 @@ solution
 solutions
 solve
 solving
+span
 specialists
 specializing
 specialty
@@ -462,6 +476,7 @@ spoken
 stack
 stakeholders
 standards
+stating
 stimulating
 strong
 students
