@@ -55,8 +55,9 @@ async def get_text_dou(dou_session, ad_link):
 
     ad_text = re.sub(r"[.,:;()/%]", " ", ad_text_with_punctuation)
 
-    ad_words_dou = list(
-        set([w.strip() for w in ad_text.split() if w.lower() not in blacklist and w.lower() not in my_skills]))
+    ad_words_dou = list(set([w.strip() for w in ad_text.split()
+                             if w.lower() not in blacklist
+                             and w.lower() not in my_skills]))
     ad_words_dou = [w for w in ad_words_dou if w.isascii() and w.isalpha() and len(w) > 1]
 
     words.extend(ad_words_dou)
@@ -72,7 +73,9 @@ async def get_text_djinni(djinni_session, ad_link):
 
     ad_text = re.sub(r"[.,:;()/%]", " ", ad_text_with_punctuation)
 
-    ad_words_djinni = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
+    ad_words_djinni = list(set([w.strip() for w in ad_text.split()
+                                if w.lower() not in blacklist
+                                and w.lower() not in my_skills]))
     ad_words_djinni = [w for w in ad_words_djinni if w.isascii() and w.isalpha() and len(w) > 1]
 
     words.extend(ad_words_djinni)
