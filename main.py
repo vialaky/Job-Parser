@@ -49,10 +49,10 @@ async def get_text_dou(dou_session, ad_link):
     #     '(', ' ').replace(':', ' ').replace(')', ' ').replace(
     #     ';', ' ').replace('●', ' ').replace('*', ' ')
 
-    ad_words = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
-    ad_words = [w for w in ad_words if w.isascii() and w.isalpha() and len(w) > 1]
+    ad_words_dou = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
+    ad_words_dou = [w for w in ad_words_dou if w.isascii() and w.isalpha() and len(w) > 1]
 
-    words.extend(ad_words)
+    words.extend(ad_words_dou)
     total_ads.append(1)
 
 
@@ -71,15 +71,15 @@ async def get_text_djinni(djinni_session, ad_link):
     #     '(', ' ').replace(':', ' ').replace(')', ' ').replace(
     #     ';', ' ').replace('●', ' ').replace('*', ' ')
 
-    ad_words = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
-    ad_words = [w for w in ad_words if w.isascii() and w.isalpha() and len(w) > 1]
+    ad_words_djinni = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
+    ad_words_djinni = [w for w in ad_words_djinni if w.isascii() and w.isalpha() and len(w) > 1]
 
-    words.extend(ad_words)
+    words.extend(ad_words_djinni)
     total_ads.append(1)
 
 
-
 async def read_dou():
+    print('Start reading DOU')
     driver = webdriver.Chrome()
     driver.get(url_dou)
     time.sleep(3)
@@ -111,6 +111,7 @@ async def read_dou():
 
 
 async def read_djinni():
+    print('Start reading DJINNI')
     # driver = webdriver.Chrome()
     # driver.get(url_dou)
     # time.sleep(3)
@@ -130,15 +131,11 @@ async def read_djinni():
     target = soup('a', class_="job-item__title-link")
 
     links_djinni = ['https://djinni.co' + link.get('href') for link in target if
-                 "Senior" not in link.getText() and
-                 "Lead" not in link.getText() and
-                 "Mentor" not in link.getText() and
-                 "QA" not in link.getText()]
+                    "Senior" not in link.getText() and
+                    "Lead" not in link.getText() and
+                    "Mentor" not in link.getText() and
+                    "QA" not in link.getText()]
 
-    # print(links_djinni)
-    # print(len(links_djinni))
-    # driver.quit()
-    #
     async with aiohttp.ClientSession() as session_djinni:
 
         try:
@@ -148,15 +145,17 @@ async def read_djinni():
             print(err.args)
 
 
+async def main():
+    async with asyncio.TaskGroup() as tg:
+        tg.create_task(read_djinni())
+        tg.create_task(read_dou())
+
 
 start_timestamp = time.time()
 
 blacklist = get_blacklist()
-
 update_blacklist(blacklist)
-
-# asyncio.run(read_dou())
-asyncio.run(read_djinni())
+asyncio.run(main())
 
 # Calculate
 N = sum(total_ads)
