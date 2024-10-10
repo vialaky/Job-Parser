@@ -20,6 +20,15 @@ total_ads = []
 count_pct = {}
 
 
+def get_my_skills():
+    """
+    Reads a list of words from my skills list that should be excluded from the count.
+    """
+    with open('my_skills.txt', 'r', encoding="utf-8") as file:
+        skills = list(set([x.lower() for y in [line.strip().split() for line in file] for x in y]))
+    return skills
+
+
 def get_blacklist():
     """
     Reads a list of words that should be excluded from the count.
@@ -44,7 +53,8 @@ async def get_text_dou(dou_session, ad_link):
 
     ad_text = re.sub(r"[.,:;()/%]", " ", ad_text_with_punctuation)
 
-    ad_words_dou = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
+    ad_words_dou = list(
+        set([w.strip() for w in ad_text.split() if w.lower() not in blacklist and w.lower() not in my_skills]))
     ad_words_dou = [w for w in ad_words_dou if w.isascii() and w.isalpha() and len(w) > 1]
 
     words.extend(ad_words_dou)
@@ -129,6 +139,7 @@ async def main():
 
 start_timestamp = time.time()
 
+my_skills = get_my_skills()
 blacklist = get_blacklist()
 update_blacklist(blacklist)
 asyncio.run(main())
