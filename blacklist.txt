@@ -402,7 +402,6 @@ provide
 provides
 providing
 psychologist
-python
 qa
 qualifications
 quality
