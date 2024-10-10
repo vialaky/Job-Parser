@@ -5,6 +5,8 @@ from collections import Counter
 import aiohttp
 import re
 import time
+
+import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -13,6 +15,7 @@ from selenium.webdriver.common.by import By
 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/123.0.0.0 Safari/537.36'}
 url_dou = 'https://jobs.dou.ua/vacancies/?category=Python'
+url_djinni = 'https://djinni.co/jobs/?primary_keyword=Python&exp_level=no_exp&exp_level=1y&exp_level=2y'
 words = []
 total_ads = []
 count_pct = {}
@@ -33,7 +36,7 @@ def update_blacklist(ls):
         file.writelines(f'{line.lower()}\n' for line in ls if line.isalpha())
 
 
-async def get_text(dou_session, ad_link):
+async def get_text_dou(dou_session, ad_link):
     r = await dou_session.get(ad_link, headers=headers)
     print(f'Reading {r.url}')
     soup = BeautifulSoup(await r.text(), "lxml")
@@ -51,6 +54,29 @@ async def get_text(dou_session, ad_link):
 
     words.extend(ad_words)
     total_ads.append(1)
+
+
+async def get_text_djinni(djinni_session, ad_link):
+    r = await djinni_session.get(ad_link, headers=headers)
+    print(f'Reading {r.url}')
+    soup = BeautifulSoup(await r.text(), "lxml")
+    # print(soup)
+
+    # ad_text_with_punctuation = soup.find('div', class_="b-typo vacancy-section").prettify()
+    ad_text_with_punctuation = soup.find('div', class_="mb-4 job-post__description").prettify()
+
+    ad_text = re.sub(r"[.,:;()/%]", " ", ad_text_with_punctuation)
+
+    # ad_text = ad_text.replace(',', ' ').replace('.', ' ').replace(
+    #     '(', ' ').replace(':', ' ').replace(')', ' ').replace(
+    #     ';', ' ').replace('●', ' ').replace('*', ' ')
+
+    ad_words = list(set([w.strip() for w in ad_text.split() if w.lower() not in blacklist]))
+    ad_words = [w for w in ad_words if w.isascii() and w.isalpha() and len(w) > 1]
+
+    words.extend(ad_words)
+    total_ads.append(1)
+
 
 
 async def read_dou():
@@ -75,13 +101,52 @@ async def read_dou():
 
     driver.quit()
 
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession() as session_dou:
 
         try:
             async with asyncio.TaskGroup() as tg:
-                [tg.create_task(get_text(session, link)) for link in links_dou]
+                [tg.create_task(get_text_dou(session_dou, link)) for link in links_dou]
         except Exception as err:
             print(err.args)
+
+
+async def read_djinni():
+    # driver = webdriver.Chrome()
+    # driver.get(url_dou)
+    # time.sleep(3)
+    #
+    # for _ in range(3):
+    #     more_button = driver.find_element(By.LINK_TEXT, "Більше вакансій")
+    #     more_button.click()
+    #     time.sleep(2)
+    #
+    page = requests.get(url_djinni, headers=headers)
+    soup = BeautifulSoup(page.text, "lxml")
+
+    # print(page.status_code)
+    # print(soup)
+    # sys.exit()
+
+    target = soup('a', class_="job-item__title-link")
+
+    links_djinni = ['https://djinni.co' + link.get('href') for link in target if
+                 "Senior" not in link.getText() and
+                 "Lead" not in link.getText() and
+                 "Mentor" not in link.getText() and
+                 "QA" not in link.getText()]
+
+    # print(links_djinni)
+    # print(len(links_djinni))
+    # driver.quit()
+    #
+    async with aiohttp.ClientSession() as session_djinni:
+
+        try:
+            async with asyncio.TaskGroup() as tg:
+                [tg.create_task(get_text_djinni(session_djinni, link)) for link in links_djinni]
+        except Exception as err:
+            print(err.args)
+
 
 
 start_timestamp = time.time()
@@ -90,7 +155,8 @@ blacklist = get_blacklist()
 
 update_blacklist(blacklist)
 
-asyncio.run(read_dou())
+# asyncio.run(read_dou())
+asyncio.run(read_djinni())
 
 # Calculate
 N = sum(total_ads)
