@@ -1,4 +1,5 @@
 import asyncio
+import sys
 from collections import Counter
 
 import aiohttp
@@ -58,7 +59,7 @@ async def get_text_dou(dou_session, ad_link):
     ad_words_dou = list(set([w.strip() for w in ad_text.split()
                              if w.lower() not in blacklist
                              and w.lower() not in my_skills]))
-    ad_words_dou = [w for w in ad_words_dou if w.isascii() and w.isalpha() and len(w) > 1]
+    ad_words_dou = [w.lower() for w in ad_words_dou if w.isascii() and w.isalpha() and len(w) > 1]
 
     words.extend(ad_words_dou)
     total_ads.append(1)
@@ -76,7 +77,7 @@ async def get_text_djinni(djinni_session, ad_link):
     ad_words_djinni = list(set([w.strip() for w in ad_text.split()
                                 if w.lower() not in blacklist
                                 and w.lower() not in my_skills]))
-    ad_words_djinni = [w for w in ad_words_djinni if w.isascii() and w.isalpha() and len(w) > 1]
+    ad_words_djinni = [w.lower() for w in ad_words_djinni if w.isascii() and w.isalpha() and len(w) > 1]
 
     words.extend(ad_words_djinni)
     total_ads.append(1)
