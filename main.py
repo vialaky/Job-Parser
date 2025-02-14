@@ -1,5 +1,4 @@
 import asyncio
-import sys
 from collections import Counter
 
 import aiohttp
@@ -85,7 +84,10 @@ async def get_text_djinni(djinni_session, ad_link):
 
 async def read_dou():
     print('Start reading DOU')
+    print(url_dou)
+
     driver = webdriver.Chrome()
+    print(url_dou)
     driver.get(url_dou)
     time.sleep(3)
 
@@ -148,7 +150,9 @@ start_timestamp = time.time()
 my_skills = get_my_skills()
 blacklist = get_blacklist()
 update_blacklist(blacklist)
-asyncio.run(main())
+# asyncio.run(main())
+asyncio.run(read_dou())
+
 
 # Calculate
 N = sum(total_ads)
