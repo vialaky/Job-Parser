@@ -1,4 +1,5 @@
 import asyncio
+import sys
 from collections import Counter
 
 import aiohttp
@@ -152,6 +153,7 @@ blacklist = get_blacklist()
 update_blacklist(blacklist)
 # asyncio.run(main())
 asyncio.run(read_dou())
+sys.exit()
 
 
 # Calculate
