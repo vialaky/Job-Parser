@@ -1,0 +1,14 @@
+# Languages
+Python
+
+
+
+# Frameworks
+
+
+
+
+# Tools and Technologies
+Git
+GitHub
+Docker
