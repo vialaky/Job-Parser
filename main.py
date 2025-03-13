@@ -169,7 +169,7 @@ sorted_cnt = dict(sorted(count_pct.items(), key=lambda x: x[1]))
 
 # Show
 for k, v in sorted_cnt.items():
-    if v > 10:
+    if v >= 10:
         print(k, v)
 print(f'\nTotal amount of ads: {sum(total_ads)}')
 print(f'Total amount of keywords: {total_words}')
